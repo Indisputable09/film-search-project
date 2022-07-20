@@ -7,3 +7,5 @@ import * as moviesKeyword from './js/moviesKeyword';
 import * as modal from './js/modal';
 import * as button from './js/up-btnAndSwitcher';
 import * as modalTeam from './js/modal-team';
+import * as fireBase from './js/fireBase';
+import * as test from './js/test-firebase';
