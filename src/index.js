@@ -11,4 +11,4 @@ import * as renderFooter from './js/renderFooter';
 import * as modalTeam from './js/modal-team';
 import * as signIn from './js/switchSignInForms';
 import * as authAndLoIn from './js/authAndLogIn';
-import * as renderFooter from './js/renderFooter';
+
