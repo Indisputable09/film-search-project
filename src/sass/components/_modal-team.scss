@@ -37,7 +37,7 @@
     transition: transform 500ms;
     border-radius: 5px;
     background: $white-color;
-       margin: 20px auto;
+       margin: auto;
     overflow-y: auto;
         // height: 100%;
     padding: 30px 30px;
@@ -73,8 +73,8 @@
 
 
 .modal-team__container {           
-    // height: 100%;    
-    margin: 0 auto;
+    height: 100%;    
+    // margin: 0 auto;
     overflow: auto;    
     -ms-overflow-style: none;
         scrollbar-width: none;
