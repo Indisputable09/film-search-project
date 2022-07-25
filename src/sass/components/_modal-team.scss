@@ -37,9 +37,9 @@
     transition: transform 500ms;
     border-radius: 5px;
     background: $white-color;
-       
+       margin: 20px auto;
     overflow-y: auto;
-        
+        // height: 100%;
     padding: 30px 30px;
         @media screen and (max-width: 1279px) {
             height: 100%;
