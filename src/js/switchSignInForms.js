@@ -1,7 +1,7 @@
-const switchFormLinkLogin = document.querySelector('#switch-form__link-login');
-const switchFormLinkSignUp = document.querySelector(
-  '#switch-form__link-sign-up'
-);
+import {translateLogOutText, translateSignUpText} from "./translateFormLog";
+
+export const switchFormLinkLogin = document.querySelector('#switch-form__link-login');
+export const switchFormLinkSignUp = document.querySelector('#switch-form__link-sign-up');
 const closeBtn = document.querySelector('.close__button');
 const loginCloseBtn = document.querySelector('.close-login__button');
 const signupOverlay = document.querySelector('.sign-up__overlay');
@@ -35,12 +35,14 @@ function onCloseModal(e) {
 }
 
 export function onLoginOpen(e) {
+  translateLogOutText();
   window.addEventListener('keydown', onEscKeyPress);
   loginOverlay.classList.remove('log-in__overlay--hidden');
   body.classList.add('modal-open');
 }
 
-function onSignupOpen(e) {
+function onSignupOpen(e) {  
+  translateSignUpText();
   window.addEventListener('keydown', onEscKeyPress);
   signupOverlay.classList.remove('sign-up__overlay--hidden');
   body.classList.add('modal-open');

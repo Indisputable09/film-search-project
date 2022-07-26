@@ -5,6 +5,7 @@ import { keyword, keywordMovies } from './moviesKeyword';
 import { refs, setLanguageToLS } from './languageSwitch';
 import Loader from './loader';
 import { renderFooter } from './footerTranslation';
+import { translateSignUpText, translateLogOutText } from './translateFormLog';
 import { translatePage } from './translateIndex';
 
 const loader = new Loader();
@@ -21,6 +22,8 @@ function onClickEN() {
     keywordMovies.langCurrent = setLanguageToLS(Movie.language.ENGLISH);
     fetchSearchAndMarkup(keywordMovies);
   }
+  translateSignUpText();
+  translateLogOutText();
   translatePage();
   renderFooter();
 }
@@ -34,6 +37,8 @@ function onClickUA() {
     keywordMovies.langCurrent = setLanguageToLS(Movie.language.UKRAINIAN);
     fetchSearchAndMarkup(keywordMovies);
   }
+  translateSignUpText();
+  translateLogOutText();
   translatePage();
   renderFooter();
 }

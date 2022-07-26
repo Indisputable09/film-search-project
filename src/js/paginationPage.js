@@ -3,7 +3,6 @@ import { fetchTrendAndMarkup, fetchSearchAndMarkup } from './fetchAndMarkup';
 import { trendMovie } from './homePage';
 import { keyword, keywordMovies } from './moviesKeyword';
 import { handleButtonClick as goToStart } from './up-btnAndSwitcher';
-
 import Loader from './loader';
 
 const loader = new Loader();

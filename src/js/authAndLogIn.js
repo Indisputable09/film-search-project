@@ -9,12 +9,13 @@ import {
 } from 'firebase/auth';
 import { getDatabase, set, ref, child, update, get } from 'firebase/database';
 import Swal from 'sweetalert2';
-import { keyLS } from './languageSwitch';
-import { getLanguageFromLS } from './languageSwitch';
+import { keyLS, getLanguageFromLS } from './languageSwitch';
 import { onLoginOpen } from './switchSignInForms';
+import { currentLangString } from './currentLangString';
+import { Movie } from './fetchMovie';
 // import { libraryStart } from './watchedMovies';
 
-const refs = {
+export const refs = {
   body: document.querySelector('body'),
   libBtnheader: document.querySelector('.site-nav__item--library__header'),
   emptyLibText: document.querySelector('.not-logged-message'),
@@ -60,6 +61,7 @@ const firebaseConfig = {
 export const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const database = getDatabase(firebaseApp);
+const lang = getLanguageFromLS();
 
 function writeUserData(userId, name, email) {
   set(ref(database, 'users/' + userId), {
@@ -175,21 +177,41 @@ const createAccount = async e => {
       userCredential.user.email
     );
     onLoginOpen();
-    Swal.fire({
-      background: '#303030',
-      color: '#ffffff',
-      title: 'Success!',
-      text: 'You are signed up now. Please, log in.',
-      icon: 'success',
-      confirmButtonText: 'OK',
-    });
-    if (!refs.body.classList.contains('dark__theme')) {
+    if (lang === Movie.language.ENGLISH) {
       Swal.fire({
+        background: '#303030',
+        color: '#ffffff',
         title: 'Success!',
         text: 'You are signed up now. Please, log in.',
         icon: 'success',
         confirmButtonText: 'OK',
       });
+      if (!refs.body.classList.contains('dark__theme')) {
+        Swal.fire({
+          title: 'Success!',
+          text: 'You are signed up now. Please, log in.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        });
+      }
+    }
+    if (lang === Movie.language.UKRAINIAN) {
+      Swal.fire({
+        background: '#303030',
+        color: '#ffffff',
+        title: 'Успіх!',
+        text: 'Ви зареєстровані. Будь ласка, увійдіть.',
+        icon: 'success',
+        confirmButtonText: 'OK',
+      });
+      if (!refs.body.classList.contains('dark__theme')) {
+        Swal.fire({
+          title: 'Успіх!',
+          text: 'Ви зареєстровані. Будь ласка, увійдіть.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        });
+      }
     }
     resetSignup();
   } catch (error) {
@@ -210,21 +232,41 @@ const loginEmailPassword = async () => {
       loginPassword
     );
     if (refs.loginUsername.value.length > 9) {
-      Swal.fire({
-        background: '#303030',
-        color: '#ffffff',
-        title: 'Warning!',
-        text: 'Your nickname is too long. Make it 9 characters maximum.',
-        icon: 'warning',
-        confirmButtonText: 'OK',
-      });
-      if (!refs.body.classList.contains('dark__theme')) {
+      if (lang === Movie.language.ENGLISH) {
         Swal.fire({
+          background: '#303030',
+          color: '#ffffff',
           title: 'Warning!',
           text: 'Your nickname is too long. Make it 9 characters maximum.',
           icon: 'warning',
           confirmButtonText: 'OK',
         });
+        if (!refs.body.classList.contains('dark__theme')) {
+          Swal.fire({
+            title: 'Warning!',
+            text: 'Your nickname is too long. Make it 9 characters maximum.',
+            icon: 'warning',
+            confirmButtonText: 'OK',
+          });
+        }
+      }
+      if (lang === Movie.language.UKRAINIAN) {
+        Swal.fire({
+          background: '#303030',
+          color: '#ffffff',
+          title: 'Попередження!',
+          text: 'Псевдонім повинен будет не більше 9 символів.',
+          icon: 'warning',
+          confirmButtonText: 'OK',
+        });
+        if (!refs.body.classList.contains('dark__theme')) {
+          Swal.fire({
+            title: 'Warning!',
+            text: 'Псевдонім повинен будет не більше 9 символів',
+            icon: 'warning',
+            confirmButtonText: 'OK',
+          });
+        }
       }
     } else {
       userCredential.user.displayName = refs.loginUsername.value;
@@ -236,9 +278,8 @@ const loginEmailPassword = async () => {
       //   sessionStorage.setItem(LS_LOGIN_KEY, `${username}`);
       // }
       localStorage.setItem(LS_UID_VALUE, `${userUID}`);
-      currentLangLogOut();
+      currentLangString({ enString: 'Log Out', uaString: 'Вихід' });
       refs.signupBtnHeader.style.display = 'none';
-      // refs.loginHeaderBtn.textContent = 'Log Out';
       refs.usernick.textContent = `${username}`;
       refs.libBtnheader.style.display = 'block';
       // libraryStart();
@@ -254,38 +295,10 @@ const loginEmailPassword = async () => {
 
 function showLoginError(error) {
   if (error.code == AuthErrorCodes.INVALID_PASSWORD) {
-    Swal.fire({
-      background: '#303030',
-      color: '#ffffff',
-      title: 'Error!',
-      text: 'Wrong password. Try again.',
-      icon: 'error',
-      confirmButtonText: 'OK',
-    });
-  }
-  if (error.code == AuthErrorCodes.EMAIL_EXISTS) {
-    Swal.fire({
-      background: '#303030',
-      color: '#ffffff',
-      title: 'Error!',
-      text: `This email is already in use.`,
-      icon: 'error',
-      confirmButtonText: 'OK',
-    });
-  }
-  if (error.code == AuthErrorCodes.USER_DELETED) {
-    Swal.fire({
-      background: '#303030',
-      color: '#ffffff',
-      title: 'Error!',
-      text: `User is not found.`,
-      icon: 'error',
-      confirmButtonText: 'OK',
-    });
-  }
-  if (!refs.body.classList.contains('dark__theme')) {
-    if (error.code == AuthErrorCodes.INVALID_PASSWORD) {
+    if (lang === Movie.language.ENGLISH) {
       Swal.fire({
+        background: '#303030',
+        color: '#ffffff',
         title: 'Error!',
         text: 'Wrong password. Try again.',
         icon: 'error',
@@ -294,6 +307,8 @@ function showLoginError(error) {
     }
     if (error.code == AuthErrorCodes.EMAIL_EXISTS) {
       Swal.fire({
+        background: '#303030',
+        color: '#ffffff',
         title: 'Error!',
         text: `This email is already in use.`,
         icon: 'error',
@@ -302,8 +317,92 @@ function showLoginError(error) {
     }
     if (error.code == AuthErrorCodes.USER_DELETED) {
       Swal.fire({
+        background: '#303030',
+        color: '#ffffff',
         title: 'Error!',
         text: `User is not found.`,
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
+    if (!refs.body.classList.contains('dark__theme')) {
+      if (error.code == AuthErrorCodes.INVALID_PASSWORD) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Wrong password. Try again.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      }
+      if (error.code == AuthErrorCodes.EMAIL_EXISTS) {
+        Swal.fire({
+          title: 'Error!',
+          text: `This email is already in use.`,
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      }
+      if (error.code == AuthErrorCodes.USER_DELETED) {
+        Swal.fire({
+          title: 'Error!',
+          text: `User is not found.`,
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      }
+    }
+  }
+  if (lang === Movie.language.UKRAINIAN) {
+    Swal.fire({
+      background: '#303030',
+      color: '#ffffff',
+      title: 'Помилка!',
+      text: 'Невірний пароль. Спробуй ще.',
+      icon: 'error',
+      confirmButtonText: 'OK',
+    });
+  }
+  if (error.code == AuthErrorCodes.EMAIL_EXISTS) {
+    Swal.fire({
+      background: '#303030',
+      color: '#ffffff',
+      title: 'Помилка!',
+      text: `Ця електронна пошта вже використовується.`,
+      icon: 'error',
+      confirmButtonText: 'OK',
+    });
+  }
+  if (error.code == AuthErrorCodes.USER_DELETED) {
+    Swal.fire({
+      background: '#303030',
+      color: '#ffffff',
+      title: 'Помилка!',
+      text: `Користувача не знайдено.`,
+      icon: 'error',
+      confirmButtonText: 'OK',
+    });
+  }
+  if (!refs.body.classList.contains('dark__theme')) {
+    if (error.code == AuthErrorCodes.INVALID_PASSWORD) {
+      Swal.fire({
+        title: 'Помилка!',
+        text: 'Невірний пароль. Спробуй ще.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
+    if (error.code == AuthErrorCodes.EMAIL_EXISTS) {
+      Swal.fire({
+        title: 'Помилка!',
+        text: `Ця електронна пошта вже використовується.`,
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
+    if (error.code == AuthErrorCodes.USER_DELETED) {
+      Swal.fire({
+        title: 'Помилка!',
+        text: `Користувача не знайдено.`,
         icon: 'error',
         confirmButtonText: 'OK',
       });
@@ -317,6 +416,7 @@ async function monitorAuthState() {
   onAuthStateChanged(auth, user => {
     const username = localStorage.getItem(LS_LOGIN_KEY);
     const usernameSS = sessionStorage.getItem(LS_LOGIN_KEY);
+    const currentTranslate = currentLangString({ enString: 'You are logged in as', uaString: 'Ви увійшли як' });
     if (refs.libGallery) {
       // refs.emptyLibText.style.display = 'none';
       // refs.emptyLibText.classList.add('message--hidden');
@@ -325,7 +425,7 @@ async function monitorAuthState() {
     if (username) {
       refs.loginForm.classList.add('logout-modal--hidden');
       refs.logoutModal.classList.remove('logout-modal--hidden');
-      refs.logoutText.innerHTML = `You are logged in as ${username}`;
+      refs.logoutText.innerHTML = `${currentTranslate} ${username}`;
     }
     // if (usernameSS) {
     //   refs.loginForm.classList.add('logout-modal--hidden');
@@ -354,8 +454,7 @@ const logout = async () => {
   localStorage.removeItem(keyLS.LS_QUEUE_UA_DATA_KEY);
   localStorage.removeItem(keyLS.LS_QUEUE_EN_DATA_KEY);
   localStorage.removeItem(LS_LOGIN_KEY);
-  currentLangLogIn();
-  // refs.loginHeaderBtn.textContent = 'Log In';
+  currentLangString({ enString: 'Log In', uaString: 'Вхід' });
   refs.signupBtnHeader.style.display = 'inline-block';
   refs.libBtnheader.style.display = 'none';
   refs.usernick.textContent = ``;
@@ -368,6 +467,7 @@ refs.logoutBtn.addEventListener('click', logout);
 function checkIfLogged() {
   const username = localStorage.getItem(LS_LOGIN_KEY);
   const usernameSS = sessionStorage.getItem(LS_LOGIN_KEY);
+  const currentLang = currentLangString({ enString: 'You are logged in as', uaString: 'Ви увійшли як' });
   if (username || usernameSS) {
     refs.libBtnheader.style.display = 'block';
     refs.signupBtnHeader.style.display = 'none';
@@ -378,10 +478,9 @@ function checkIfLogged() {
     }
     refs.loginForm.classList.add('logout-modal--hidden');
     refs.logoutModal.classList.remove('logout-modal--hidden');
-    currentLangLogOut();
-    // refs.loginHeaderBtn.textContent = 'Log Out';
+    currentLangString({ enString: 'Log Out', uaString: 'Вихід' });
     refs.usernick.textContent = `${username}`;
-    refs.logoutText.innerHTML = `You are logged in as ${username}`;
+    refs.logoutText.innerHTML = `${currentLang} ${username}`;
   } else {
     refs.libBtnheader.style.display = 'none';
     if (refs.libGallery) {
@@ -392,8 +491,7 @@ function checkIfLogged() {
     refs.signupBtnHeader.style.display = 'inline-block';
     refs.loginForm.classList.remove('logout-modal--hidden');
     refs.logoutModal.classList.add('logout-modal--hidden');
-    currentLangLogIn();
-    // refs.loginHeaderBtn.textContent = 'Log In';
+    currentLangString({ enString: 'Log In', uaString: 'Вхід' });
     refs.usernick.textContent = ``;
   }
 }
@@ -410,20 +508,20 @@ function resetSignup() {
   refs.signupEmail.value = '';
 }
 
-async function currentLangLogIn() {
-  const lang = await getLanguageFromLS();
-  if (lang === 'en-US') {
-    return (refs.loginHeaderBtn.textContent = 'Log In');
-  } else {
-    return (refs.loginHeaderBtn.textContent = 'Вхід');
-  }
-}
+// async function currentLangLogIn() {
+//   const lang = await getLanguageFromLS();
+//   if (lang === 'en-US') {
+//     return (refs.loginHeaderBtn.textContent = 'Log In');
+//   } else {
+//     return (refs.loginHeaderBtn.textContent = 'Вхід');
+//   }
+// }
 
-async function currentLangLogOut() {
-  const lang = await getLanguageFromLS();
-  if (lang === 'en-US') {
-    return (refs.loginHeaderBtn.textContent = 'Log Out');
-  } else {
-    return (refs.loginHeaderBtn.textContent = 'Вихід');
-  }
-}
+// async function currentLangLogOut() {
+//   const lang = await getLanguageFromLS();
+//   if (lang === 'en-US') {
+//     return (refs.loginHeaderBtn.textContent = 'Log Out');
+//   } else {
+//     return (refs.loginHeaderBtn.textContent = 'Вихід');
+//   }
+// }

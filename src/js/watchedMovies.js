@@ -10,7 +10,6 @@ import {
 } from './languageSwitch';
 import { makeMarkupCard } from './cardMarkup';
 import { modal, btnNameKey } from './modal';
-
 import Loader from './loader';
 
 const loader = new Loader();

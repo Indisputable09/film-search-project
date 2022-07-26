@@ -17,10 +17,6 @@ const {
   btnSignUp,
   btnLogIn,
   searchPlaceholder,
-  textUpFirst,
-  textUpSecond,
-  textUpThird,
-  textLink,
 } = refsTranslate;
 console.log(searchPlaceholder);
 

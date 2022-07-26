@@ -12,3 +12,5 @@ import * as modalTeam from './js/modal-team';
 import * as signIn from './js/switchSignInForms';
 import * as authAndLoIn from './js/authAndLogIn';
 import * as headerTranslation from './js/translateIndex'; 
+import * as translateFormLog from './js/translateFormLog';
+import * as currentLangString from './js/currentLangString';
