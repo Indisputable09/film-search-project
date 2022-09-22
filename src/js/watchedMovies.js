@@ -253,7 +253,7 @@ function handledChangeDeskTop(e) {
   }
 }
 
-// ---------------------------Pagination----------------------------
+// ---------------------------Pagination--------------------------------
 
 function onClickBtnInMainBoxChangePage(event) {
   if (event.target.nodeName !== 'BUTTON') {
